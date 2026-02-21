@@ -1,0 +1,12 @@
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+yt-dlp==2024.4.9
+spleeter==2.3.2
+librosa==0.10.2
+numpy==1.26.4
+scipy==1.13.0
+sqlmodel==0.0.19
+python-multipart==0.0.9
+aiofiles==23.2.1
+websockets==12.0
+soundfile==0.12.1

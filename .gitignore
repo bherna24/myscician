@@ -1,0 +1,17 @@
+# Backend
+backend/songs/
+backend/__pycache__/
+backend/*.pyc
+backend/.env
+backend/myscician.db
+backend/pretrained_models/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# General
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,7 @@
+songs/
+__pycache__/
+*.pyc
+*.pyo
+.env
+myscician.db
+pretrained_models/
