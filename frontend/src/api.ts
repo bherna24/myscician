@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE = "http://localhost:8000";
 
-export interface SongRead {
+export type SongRead = {
   id: number;
   title: string;
   artist: string | null;
@@ -10,15 +10,15 @@ export interface SongRead {
   status: "pending" | "processing" | "ready" | "error";
   error_message: string | null;
   duration: number | null;
-}
+};
 
-export interface PitchFrame {
+export type PitchFrame = {
   time: number;
   hz: number | null;
   voiced: boolean;
-}
+};
 
-export interface SongPitches {
+export type SongPitches = {
   id: number;
   title: string;
   duration: number;
@@ -26,7 +26,7 @@ export interface SongPitches {
   hop_length: number;
   frames: PitchFrame[];
   audio_path: string;
-}
+};
 
 export const api = {
   listSongs: () =>

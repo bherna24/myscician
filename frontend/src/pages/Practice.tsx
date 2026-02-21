@@ -4,7 +4,7 @@ import { useSongPitches } from "../hooks/useSongPitches";
 import { useMicPitch } from "../hooks/useMicPitch";
 import { NoteHighway } from "../components/NoteHighway";
 import { AccuracyPanel } from "../components/AccuracyPanel";
-import { PitchFrame } from "../api";
+import type { PitchFrame } from "../api";
 
 interface UserFrame {
   time: number;

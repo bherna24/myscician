@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { PitchFrame } from "../api";
+import type { PitchFrame } from "../api";
 
 interface Props {
   referenceFrames: PitchFrame[];

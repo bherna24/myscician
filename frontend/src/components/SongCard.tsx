@@ -1,4 +1,4 @@
-import { SongRead } from "../api";
+import type { SongRead } from "../api";
 
 interface Props {
   song: SongRead;

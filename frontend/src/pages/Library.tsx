@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api, SongRead } from "../api";
+import { api } from "../api";
+import type { SongRead } from "../api";
 import { SongCard } from "../components/SongCard";
 
 export function Library() {
