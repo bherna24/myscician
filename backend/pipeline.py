@@ -36,16 +36,53 @@ def _song_dir(song_id: int) -> Path:
     return d
 
 
+NODE20_PATH = Path(__file__).parent.parent / "node20" / "node-v20.19.0-win-x64" / "node.exe"
+
+
+def _yt_dlp_cmd() -> list[str]:
+    """Return the yt-dlp invocation that works on this system."""
+    import shutil
+    if shutil.which("yt-dlp"):
+        return ["yt-dlp"]
+    return ["py", "-m", "yt_dlp"]
+
+
+def _ffmpeg_location() -> Optional[str]:
+    """Return path to ffmpeg binary, falling back to imageio-ffmpeg if needed."""
+    import shutil
+    if shutil.which("ffmpeg"):
+        return None  # already on PATH, no flag needed
+    try:
+        import imageio_ffmpeg
+        return str(Path(imageio_ffmpeg.get_ffmpeg_exe()).parent)
+    except ImportError:
+        return None
+
+
+def _js_runtime_flag() -> list[str]:
+    """Return --js-runtimes flag pointing at the project-local Node 20 binary."""
+    if NODE20_PATH.exists():
+        return ["--js-runtimes", f"node:{NODE20_PATH}"]
+    return ["--js-runtimes", "node"]
+
+
 def download_audio(youtube_url: str, output_path: Path) -> Path:
     """Download YouTube audio as 16kHz mono WAV using yt-dlp."""
     wav_path = output_path / "audio.wav"
     cmd = [
-        "yt-dlp",
+        *_yt_dlp_cmd(),
         "--no-playlist",
         "--extract-audio",
         "--audio-format", "wav",
         "--audio-quality", "0",
-        "--postprocessor-args", f"-ar {SAMPLE_RATE} -ac 1",
+        "--postprocessor-args", f"ffmpeg:-ar {SAMPLE_RATE} -ac 1",
+        "--cookies-from-browser", "firefox",
+        *_js_runtime_flag(),
+    ]
+    ffmpeg_loc = _ffmpeg_location()
+    if ffmpeg_loc:
+        cmd += ["--ffmpeg-location", ffmpeg_loc]
+    cmd += [
         "-o", str(wav_path.with_suffix("")) + ".%(ext)s",
         youtube_url,
     ]
@@ -119,7 +156,9 @@ def fetch_youtube_title(youtube_url: str) -> Optional[str]:
     """Fetch the video title without downloading the full video."""
     try:
         result = subprocess.run(
-            ["yt-dlp", "--get-title", "--no-playlist", youtube_url],
+            [*_yt_dlp_cmd(), "--get-title", "--no-playlist",
+             "--cookies-from-browser", "firefox",
+             *_js_runtime_flag(), youtube_url],
             capture_output=True, text=True, timeout=30,
         )
         if result.returncode == 0:

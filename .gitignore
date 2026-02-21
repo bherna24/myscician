@@ -15,3 +15,6 @@ frontend/.env
 .DS_Store
 Thumbs.db
 *.log
+
+# Local Node.js runtime (used for yt-dlp JS challenge solving)
+node20/
